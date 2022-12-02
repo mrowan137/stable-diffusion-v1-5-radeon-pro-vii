@@ -176,9 +176,9 @@ The main difference from the official Stable Diffusion environment is that this 
 From within the Stable Diffusion repository, these commands will get the environment set up (where [requirements.txt](requirements.txt) is the one included in this repository):
 ```bash
 $ cd stable-diffusion
-$ conda create --name ldm
+$ conda create --name ldm python=3.8.5
 $ conda activate ldm
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 ```
 
 If the ROCm and PyTorch installations all went OK, PyTorch should be able to see the GPU, which can be checked from within Python:
