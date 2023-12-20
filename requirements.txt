@@ -32,5 +32,5 @@ streamlit_drawable_canvas==0.9.2
 torch==1.13.0+rocm5.2
 torchvision==0.14.0+rocm5.2
 tqdm==4.64.1
-transformers==4.19.2
+transformers==4.36.0
 typing_extensions==4.4.0
