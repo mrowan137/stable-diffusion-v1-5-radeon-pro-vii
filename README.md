@@ -1,7 +1,7 @@
 Stable Diffusion v1.5 setup on a Radeon Pro VII (AMD GPU)
 =========================================================
 
-These are personal notes cataloging steps needed to do to get [Stable Diffusion v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5) running locally on Radeon Pro VII (AMD GPU).
+These are personal notes cataloging steps needed to do to get [Stable Diffusion v1.5](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5) running locally on Radeon Pro VII (AMD GPU).
 The initial system configuration was Ubuntu v18.04, Linux kernel version `Linux 5.4.0-131-generic`, no ROCm installed, and no previous version of Stable Diffusion or corresponding Python environment.
 These notes cover roughly 4 steps:
   * [Upgrade Ubuntu](#upgrade-ubuntu) (to ROCm-supported version)
@@ -113,7 +113,7 @@ Agent 2
   Vendor Name:             AMD
 ```
 
-As another check, I ran `rocminfo`, which shows some information about the GPU:
+`rocm-smi` shows some information about the GPU:
 ```
 ======================= ROCm System Management Interface =======================
 ================================= Concise Info =================================
@@ -142,13 +142,13 @@ CondaHTTPError: HTTP 000 CONNECTION FAILED
 ```
 but this was avoided with Miniconda v4.7.12.
 
-From here cloned the [Stable Diffusion repository](https://github.com/runwayml/stable-diffusion):
+From here cloned the [Stable Diffusion repository](https://github.com/CompVis/stable-diffusion):
 ```bash
-$ git clone https://github.com/runwayml/stable-diffusion.git
+$ git clone https://github.com/CompVis/stable-diffusion.git
 ```
 
 then navigated into the Stable Diffusion directory to set up a Python environment suitable for running Stable Diffusion on the Radeon Pro VII.
-The required environment is different than the one specified in [environment.yaml](https://github.com/runwayml/stable-diffusion/blob/main/environment.yaml) included in the Stable Diffusion repository, which assumes the user would run on an Nvidia GPU.
+The required environment is different than the one specified in [environment.yaml](https://github.com/CompVis/stable-diffusion/blob/main/environment.yaml) included in the Stable Diffusion repository, which assumes the user would run on an Nvidia GPU.
 Provided in this repository is a [requirements.txt](requirements.txt) that worked for running locally on Radeon Pro VII (AMD GPU).
 The main difference from the official Stable Diffusion environment is that this specifies [PyTorch](https://pytorch.org/) for ROCm rather than CUDA.
 From within the Stable Diffusion repository, these commands will get the environment set up (where [requirements.txt](requirements.txt) is the one included in this repository):
@@ -174,13 +174,13 @@ $ sudo usermod -a -G render,video $LOGNAME
 Logging out then back in and checking `groups` should confirm the user is part of the `render` and `video` groups.
 
 Next download Stable Diffusion model weights from Hugging Face:
-  * [v1-5-pruned-emaonly.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)
+  * [v1-5-pruned-emaonly.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)
 
 Accessing the model weights requires to make an account and accept an agreement.
 
 You can observe at Hugging Face there are two choices for the weights:
-  * [v1-5-pruned-emaonly.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)
-  * [v1-5-pruned.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt)
+  * [v1-5-pruned-emaonly.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)
+  * [v1-5-pruned.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt)
 
 The 'emaonly' weights take less memory and are suitable for inference ('EMA' refers to 'exponential moving average' technique, a performance optimization for stochastic gradient descent; you can read more about it in the [original 'Adam' paper](https://arxiv.org/pdf/1412.6980.pdf)).
 If interested in fine-tuning the model, v1-5-pruned.ckpt is suitable, which contains both EMA & non-EMA weights.
@@ -190,11 +190,11 @@ Out of curiosity, I compared images generated with both sets of weights, but cou
 Stable Diffusion tips
 ---------------------
 
-  * There are different possibiliites for image generation, described in detail at the [Stable Diffusion official repository](https://github.com/runwayml/stable-diffusion):
-    * [Text-to-image](https://github.com/runwayml/stable-diffusion#:~:text=Text%2Dto%2DImage%20with%20Stable%20Diffusion): generates an image from an input text prompt.
-    * [Image modification](https://github.com/runwayml/stable-diffusion#:~:text=astronaut_rides_horse.png%22\)-,Image%20Modification%20with%20Stable%20Diffusion,-By%20using%20a): generates an image from a user-provided image, a text prompt, and a parameter controlling the amount of noise added to the user-provided image. 
-    * [Inpainting](https://github.com/runwayml/stable-diffusion#:~:text=Inpainting%20with%20Stable%20Diffusion): generates an image from a user-provided image, an image mask, and a text prompt.
-      * This requires to download the inpainting weights: [sd-v1-5-inpainting.ckpt](https://huggingface.co/runwayml/stable-diffusion-inpainting/blob/main/sd-v1-5-inpainting.ckpt).
+  * There are different possibiliites for image generation, described in detail at the [Stable Diffusion official repository](https://github.com/CompVis/stable-diffusion/tree/main):
+    * [Text-to-image](https://github.com/CompVis/stable-diffusion/tree/main?tab=readme-ov-file#text-to-image-with-stable-diffusion): generates an image from an input text prompt.
+    * [Image modification](https://github.com/CompVis/stable-diffusion/tree/main?tab=readme-ov-file#image-modification-with-stable-diffusion): generates an image from a user-provided image, a text prompt, and a parameter controlling the amount of noise added to the user-provided image. 
+    * [Inpainting](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting): generates an image from a user-provided image, an image mask, and a text prompt.
+      * This requires to download the inpainting weights: [sd-v1-5-inpainting.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting/blob/main/sd-v1-5-inpainting.ckpt).
   * Image modification seems to work best with images of size 512 x 512 pixels.
 
 
@@ -215,7 +215,7 @@ Images were of similar quality, whether using the EMA-only or EMA & non-EMA weig
 ```bash
 $ python scripts/txt2img.py --prompt "80s style floating-head family portrait of cute scottish fold cats, in starcraft 2 space, Canon EOS R3, 80mm" --plms
 ```
-v1.5, EMA-only ([v1-5-pruned-emaonly.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)) | v1.5, EMA & non-EMA ([v1-5-pruned.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt))
+v1.5, EMA-only ([v1-5-pruned-emaonly.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt)) | v1.5, EMA & non-EMA ([v1-5-pruned.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt))
 :----------------------------------------------:|:-----------------------------------------:
 ![](./imgs/space-cats-v1-5-pruned-emaonly.png)  |  ![](./imgs/space-cats-v1-5-pruned.png)
 
@@ -230,7 +230,7 @@ $ python scripts/txt2img.py --prompt "Painting of a person painting a person pai
 $ python scripts/txt2img.py --prompt "High quality photo of Darth Vader at the Golden Gate Bridge" --plms
 $ python scripts/txt2img.py --prompt "80s style floating-head family portrait of cute scottish fold cats, fantasy scifi space background, vintage 80s camera, 35mm" --plms
 ```
-v1.4, EMA-only ([sd-v1-4.ckpt](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/blob/main/sd-v1-4.ckpt)) | v1.5, EMA-only ([v1-5-pruned-emaonly.ckpt](https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned-emaonly.ckpt))
+v1.4, EMA-only ([sd-v1-4.ckpt](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/blob/main/sd-v1-4.ckpt)) | v1.5, EMA-only ([v1-5-pruned-emaonly.ckpt](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/blob/main/v1-5-pruned.ckpt))
 :-----------------------------------------:|:-----------------------------------------:
 ![](./imgs/recursion-painting-sd-v1-4.png)  |  ![](./imgs/recursion-painting-v1-5-pruned-emaonly.png)
 ![](./imgs/vader-sd-v1-4.png)  |  ![](./imgs/vader-v1-5-pruned-emaonly.png)
@@ -263,7 +263,7 @@ This section covers miscellaneous issues encountered during the quest to run Sta
 
 References
 ----------
-  * [Radeon Pro VII](https://www.amd.com/en/products/professional-graphics/radeon-pro-vii)
+  * [Radeon Pro VII](https://www.techpowerup.com/gpu-specs/radeon-pro-vii.c3575)
   * [ROCm supported GPUs](https://github.com/RadeonOpenCompute/ROCm#supported-gpus)
   * [How to upgrade Ubuntu to v20.04](https://linuxconfig.org/how-to-upgrade-ubuntu-to-20-04-lts-focal-fossa)
   * [How to upgrade from Ubuntu v18.04 to v20.04](https://ubuntu.com/blog/how-to-upgrade-from-ubuntu-18-04-lts-to-20-04-lts-today)
@@ -274,9 +274,9 @@ References
   * [Ubuntu 20.04: CondaHTTPError](https://github.com/conda/conda/issues/9948)
   * [PyTorch](https://pytorch.org/)
   * [How to add user to video group](https://askubuntu.com/questions/881985/how-do-i-add-myself-to-the-video-group-after-installing-amdgpu-pro-driver)
-  * [Stable Diffusion GitHub repository](https://github.com/runwayml/stable-diffusion)
-  * [Stable Diffusion v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
-  * [Stable Diffusion inpainting](https://huggingface.co/runwayml/stable-diffusion-inpainting)
+  * [Stable Diffusion GitHub repository](https://github.com/CompVis/stable-diffusion/tree/main)
+  * [Stable Diffusion v1.5](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5)
+  * [Stable Diffusion inpainting](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting)
   * [Stable Diffusion v1.4](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original)
   * [How to prevent wifi sleep after suspend](https://askubuntu.com/questions/1022203/how-to-prevent-wifi-sleep-after-suspend)
   * [Slow wireless on Ubuntu v20.04](https://askubuntu.com/questions/1243181/wi-fi-on-ubuntu-20-04-is-very-slow)
