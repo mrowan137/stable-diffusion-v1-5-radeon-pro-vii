@@ -88,7 +88,7 @@ After this, the installed Linux kernel is compatible with Radeon Pro VII.
 Install ROCm
 ------------
 
-Installation instructions for Ubuntu are [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/native-install/ubuntu.html).
+Linux drivers for Radeon Pro and installation instructions can be found [here](https://www.amd.com/en/support/download/linux-drivers.html).
 To check installation, run `rocminfo` and you should see output e.g.:
 ```
 ==========               
@@ -269,7 +269,7 @@ References
   * [How to upgrade from Ubuntu v18.04 to v20.04](https://ubuntu.com/blog/how-to-upgrade-from-ubuntu-18-04-lts-to-20-04-lts-today)
   * [Bash script for Linux kernel installation](https://github.com/pimlie/ubuntu-mainline-kernel.sh)
   * [Install or upgrade to latest Linux kernel on Ubuntu 20.04](https://linuxhint.com/install-upgrade-linux-kernel-ubuntu-linux-mint/)
-  * [How to install ROCm](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/native-install/ubuntu.html)
+  * [Linux drivers for Radeon Pro](https://www.amd.com/en/support/download/linux-drivers.html)
   * [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
   * [Ubuntu 20.04: CondaHTTPError](https://github.com/conda/conda/issues/9948)
   * [PyTorch](https://pytorch.org/)
