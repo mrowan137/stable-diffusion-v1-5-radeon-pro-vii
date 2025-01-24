@@ -73,7 +73,7 @@ $ sudo mv ubuntu-mainline-kernel.sh /usr/local/bin/
 
 The Linux kernel version is updated by running the script:
 ```bash
-$ sudo ubuntu-mainline-kernel.sh –i
+$ sudo ubuntu-mainline-kernel.sh -i
 ```
 
 Reboot, then verify the Linux kernel version:
