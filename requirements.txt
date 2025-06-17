@@ -33,7 +33,7 @@ opencv-python==4.11.0.86
 packaging==24.2
 pillow==11.0.0
 propcache==0.3.0
-protobuf==3.20.1
+protobuf==4.25.8
 pyDeprecate==0.3.2
 pytorch-lightning==2.4.0
 pytorch-triton-rocm==3.3.0+git96316ce5
